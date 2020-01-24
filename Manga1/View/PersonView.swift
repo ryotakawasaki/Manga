@@ -10,10 +10,7 @@ import SwiftUI
 
 struct PersonView: View {
     var body: some View {
-        
-         NavigationView {
-        
-            VStack {
+        VStack {
                 HStack {
                     NavigationLink (destination: ContentView()) {
                     Image(systemName: "lessthan")
@@ -29,7 +26,6 @@ struct PersonView: View {
             }
            
         }
-}
 }
 
 struct PersonView_Previews: PreviewProvider {

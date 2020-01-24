@@ -15,9 +15,12 @@ struct ContentView: View {
     @State var isShowing = true
     @ObservedObject var networkManager = NetworkManager()
     
+    let min = UserDefaults.standard.integer(forKey: "min")
+    let sec = UserDefaults.standard.integer(forKey: "sec")
+    
     
     var body: some View {
-        NavigationView {
+//        NavigationView {
         GeometryReader {
                 geometry in
         VStack {
@@ -29,8 +32,8 @@ struct ContentView: View {
                 }.buttonStyle(PlainButtonStyle())
 
                 Picker(selection: self.$isShowing, label: Text("What is your favorite color?")) {
-                    Text("総合").tag(0)
-                    Text("男性").tag(1)
+                    Text(String(self.min)).tag(0)
+                    Text(String(self.sec)).tag(1)
                     Text("女性").tag(2)
                 }.pickerStyle(SegmentedPickerStyle())
                 .padding()
@@ -78,20 +81,20 @@ struct ContentView: View {
                 Text("読みたい作品が決まったらStartを押してね！")
                     Text("↓↓10万冊が読み放題！↓↓")
 
-                    NavigationLink(destination: ContentWriterView())
+                    NavigationLink(destination: ChildView())
                     {
                         Image("alldata")
                         .resizable()
                         .frame(width: geometry.size.width / 1,
                         height: geometry.size.height / 4)
                     }.buttonStyle(PlainButtonStyle())
-//                    .disabled(!self.isPlaying)
+                    .disabled(!self.isPlaying)
 
                     }
                 }
             }
         }
-    }
+    
                             
 
 struct ContentView_Previews: PreviewProvider {

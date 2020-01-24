@@ -9,10 +9,47 @@
 import SwiftUI
 
 struct ChildView: View {
+    
+    @ObservedObject var inTimer = InTimer()
+    @State var isPlayingIn = false
+    
     var body: some View {
-            Image("karami")
+        ZStack {
+             Color("myColor").edgesIgnoringSafeArea(.all)
+            
+            VStack {
+//                Text("\(self.inTimer.counterIn)")
+//                    .font(.largeTitle)
+//                    .fontWeight(.heavy)
+//                    .padding(.top, 50)
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        if !self.isPlayingIn {
+                            self.inTimer.start()
+                            self.isPlayingIn = true
+                        }
+                    }) {
+                        Text("入店")
+                            .foregroundColor(Color.blue)
+                    }.disabled(isPlayingIn)
+                        Spacer()
+                    Button(action: {
+                        self.inTimer.stop()
+                        self.isPlayingIn = false
+                    }) {
+                        Text("退出")
+                        .foregroundColor(Color.red)
+                    }.disabled(!isPlayingIn)
+                    Spacer()
+                }
+//            NavigationLink(destination: ContentWriterView()) {
+//            Text("初回10分無料!漫画を読む")
+//                }
+            }
+            }.font(.largeTitle)
+        }
     }
-}
 
 struct ChildView_Previews: PreviewProvider {
     static var previews: some View {
