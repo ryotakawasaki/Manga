@@ -9,18 +9,17 @@ import SwiftUI
 
 struct UserDetailView: View {
     
-    var user: User
-    @ObservedObject var stopwatch = Stopwatch()
+    var writer: Writer
+    @EnvironmentObject var stopwatch: Stopwatch
+    @EnvironmentObject var intimer: InTimer
     
     var body: some View {
         VStack {
-            WebView(request: URLRequest(url: (URL(string: user.html_url!))!))
+            WebView(request: URLRequest(url: (URL(string: writer.html_url!))!))
             }
-//        .onAppear(perform: {
-//                self.stopwatch.start()
-//
-//
-//            })
+        .onAppear(perform: {
+            self.stopwatch.start()
+        })
 
 //        .navigationBarItems(trailing: Button(action: {
 //               print("ログアウトメソッド")

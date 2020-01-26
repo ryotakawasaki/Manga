@@ -17,6 +17,7 @@ class InTimer: ObservableObject {
     func start() {
         self.intimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
             self.counterIn += 1
+         print(self.counterIn)
         }
     }
     

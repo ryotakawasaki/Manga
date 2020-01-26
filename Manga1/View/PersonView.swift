@@ -6,30 +6,29 @@
 //  Copyright © 2020 Ryota Kawasaki. All rights reserved.
 //
 
-import SwiftUI
-
-struct PersonView: View {
-    var body: some View {
-        VStack {
-                HStack {
-                    NavigationLink (destination: ContentView()) {
-                    Image(systemName: "lessthan")
-                    }.navigationBarTitle("")
-                    .navigationBarHidden(true)
-                
-            Text("閲覧履歴")
-        
-                }
-                
-//                .navigationBarTitle("")
+//import SwiftUI
+//
+//struct PersonView: View {
+//    var body: some View {
+//        VStack {
+//                HStack {
+//                    NavigationLink (destination: ContentView()) {
+//                    Text("料金を支払う")
+//                    }.navigationBarTitle("")
 //                    .navigationBarHidden(true)
-            }
-           
-        }
-}
-
-struct PersonView_Previews: PreviewProvider {
-    static var previews: some View {
-        PersonView()
-    }
-}
+//                
+//        
+//                }
+//                
+////                .navigationBarTitle("")
+////                    .navigationBarHidden(true)
+//            }
+//           
+//        }
+//}
+//
+//struct PersonView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        PersonView()
+//    }
+//}

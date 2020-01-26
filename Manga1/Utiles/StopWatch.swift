@@ -22,9 +22,10 @@ class Stopwatch: ObservableObject {
     
     func start() {
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+            print("タタタタタタタッタタタタ")
             if self.minCounter == 60 {
                 self.hourCounter += 1
-                self.minCounter == 0
+                self.minCounter = 0
             } else { self.minCounter += 1
             }
             

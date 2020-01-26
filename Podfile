@@ -7,7 +7,9 @@ target 'Manga1' do
 
   # Pods for Manga1
 pod 'Firebase/Core'
-  pod 'Firebase/Firestore'
-  pod 'Kingfisher/SwiftUI'
+pod 'Firebase/Firestore'
+pod 'Kingfisher/SwiftUI'
+pod 'Firebase/Auth'
+pod 'Firebase/Storage'
 
 end

@@ -10,21 +10,21 @@ import SwiftUI
 
 struct UserRow: View {
     
-    var user: User
+    var writer: Writer
+    @EnvironmentObject var intimer: InTimer
 
     var body: some View {
-        NavigationLink(destination: UserDetailView(user:user))
+        NavigationLink(destination: UserDetailView(writer:writer))
         {
-           
-            VStack (alignment: .leading) {
+           VStack (alignment: .leading) {
 //                Text(String(user.id!))
 //                Text(user.book_id!)
 //                    .font(.headline)
 //                    .fontWeight(.bold)
-                Text(String(user.title!))
+                Text(String(writer.title!))
                     .font(.headline)
                     .fontWeight(.bold)
-                Text(String(user.html_url!))
+                Text(String(writer.html_url!))
                     .font(.caption)
             }
         }
@@ -33,6 +33,6 @@ struct UserRow: View {
 
 struct UserRow_Previews: PreviewProvider {
     static var previews: some View {
-        UserRow(user: User.example)
+        UserRow(writer: Writer.example)
     }
 }

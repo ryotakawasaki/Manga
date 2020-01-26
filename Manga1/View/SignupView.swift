@@ -10,66 +10,89 @@ import SwiftUI
 
 struct SignupView: View {
     
-    @State var mail = ""
-     @State var password = ""
-        @State var username = ""
-    @State var isShow = false
+    @State var showModal: Bool = false
+    
+    @State var username: String = ""
+    @State var email: String = ""
+    @State var password: String = ""
+    
+    //アラート発火: Bool
+    @State var showAlert = false
+    
+    //エラーかどうか
     @State var isError: Bool = false
-        @State var errorTxt: String = ""
+    //エラー文代入
+    @State var errorTxt: String = ""
+    
+    @EnvironmentObject var userStore: UserStore
+    
+    func signUp() {
+        
+        userStore.signUp(email: email, password: password) {(result, error) in
+            if error != nil {
+                self.isError = true
+                self.errorTxt = error?.localizedDescription ?? "nil"
+            } else {
+                let changeRequest = result?.user.createProfileChangeRequest()
+                changeRequest?.displayName = self.username
+                changeRequest?.commitChanges(completion: { (error) in
+                    if let error = error {
+                        debugPrint(error.localizedDescription)
+                    }
+                })
+                let user = User(uid: result?.user.uid ?? "", displayName: result?.user.displayName ?? "", email: result?.user.email ?? "")
+                self.userStore.setData(user: user)
+                self.username = ""
+                self.email = ""
+                self.password = ""
+            }
+        }
+    }
+    
     
     var body: some View {
-        GeometryReader { geometry in
-        ZStack {
-        Color("myColor").edgesIgnoringSafeArea(.all)
-        
         VStack {
-            
-            Image("loggo")
-            .resizable()
-            .frame(width: geometry.size.width / 1,
-                    height: geometry.size.height / 2)
-            Spacer()
-        TextField("username", text: self.$username)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-                               .padding()
-        Spacer()
-        TextField("e-mail.addres", text: self.$mail)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-                               .padding()
-        Spacer()
-        SecureField("password", text: self.$password)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
-                               .padding()
-        Spacer()
-            
+            Text("SIGN UP")
+                .fontWeight(.heavy)
+                .font(.title)
+            TextField("Username", text: $username)
+                .padding()
+                .cornerRadius(5.0)
+                .padding(.bottom, 15)
+            TextField("Email", text: $email)
+                .padding()
+                .cornerRadius(5.0)
+                .padding(.bottom, 15)
+                .autocapitalization(.none)
+            SecureField("Password", text: $password)
+                .padding()
+                .cornerRadius(5.0)
+                .padding(.bottom, 15)
             Button(action: {
-                                   if self.mail.isEmpty && self.password.isEmpty {
-                                                              print("だめ")
-                                                              self.isError.toggle()
-                                                              self.errorTxt = "どれも入力されていません"
-                                                          } else if self.username.isEmpty {
-                                                          print("あれ")
-                                                          self.isError.toggle()
-                                                          self.errorTxt = "ユーザー名が入力されていません"
-                                                          }
-                                                          else if self.mail.isEmpty {
-                                                              print("これもダメ")
-                                                              self.isError.toggle()
-                                                               self.errorTxt = "emailアドレスが入力されていません"
-                                                          } else if self.password.isEmpty {
-                                                              self.isError.toggle()
-                                                              self.errorTxt = "パスワードが入力されていません"
-                                                          } else {
-                                                              print("おけ")
-                                                          }
-                           })
-                               {
-                                 AuthButton(title: "SIGN UP")
-                           }
-    }
-            }.alert(isPresented: self.$isError, content: {
-            Alert(title: Text("だめ！"), message: Text(self.errorTxt),dismissButton: .default(Text("OK")))})
-        }
+                print("Button tapped")
+                
+                
+                if self.username.isEmpty {
+                    print("あれ")
+                    self.isError.toggle()
+                    self.errorTxt = "ユーザー名が入力されていません"
+                } else if self.email.isEmpty {
+                    self.isError.toggle()
+                    self.errorTxt = "emailアドレスが入力されていません"
+                } else if self.password.isEmpty {
+                    self.isError.toggle()
+                    self.errorTxt = "パスワードが入力されていません"
+                } else {
+                    self.signUp()
+                }
+            }) {
+                AuthButton(title: "SIGN UP")
+            }
+            Spacer()
+        }.padding()
+            .alert(isPresented: $isError, content: {
+                Alert(title: Text("Error"), message: Text(self.errorTxt), dismissButton: .default(Text("OK")))
+            })
     }
 }
 

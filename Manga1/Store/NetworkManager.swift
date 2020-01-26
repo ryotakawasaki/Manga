@@ -11,16 +11,16 @@ import Foundation
 
 class NetworkManager: ObservableObject {
     
-    @Published var users: [User] = [.init(book_id: 0, title: "", html_url: "")]
+    @Published var writer: [Writer] = [.init(book_id: 0, title: "", html_url: "")]
     
     func getAllUsers() {
         guard let url = URL(string: "http://www.aozorahack.net/api/v0.1/books") else { return }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             do {
-                let users = try JSONDecoder().decode([User].self, from: data!)
+                let writer = try JSONDecoder().decode([Writer].self, from: data!)
                 DispatchQueue.main.async {
-                    self.users = users
-                    print(self.users)
+                    self.writer = writer
+                    print(self.writer)
                 }
             } catch {
                 print("Failed To decode: ", error)

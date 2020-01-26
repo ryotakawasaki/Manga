@@ -2,76 +2,98 @@
 //  LoginView.swift
 //  Manga1
 //
-//  Created by 川崎綾太 on 2020/01/23.
+//  Created by 川崎綾太 on 2020/01/25.
 //  Copyright © 2020 Ryota Kawasaki. All rights reserved.
 //
 
+
+
+
 import SwiftUI
+
 
 struct LoginView: View {
     
-    @State var mail = ""
-    @State var password = ""
-    @State var isShowmail:Bool = false
-    @State var isShowpass:Bool = false
+    //Modal発火: Bool
+    @State var showModal: Bool = false
+    
+    @State var email: String = ""
+    @State var password: String = ""
+    
+    //アラート発火: Bool
+    @State var showAlert = false
+    
+    //エラーかどうか
     @State var isError: Bool = false
-     @State var errorTxt: String = ""
+    //エラー文代入
+    @State var errorTxt: String = ""
+//     @EnvironmentObject var userStore: UserStore
+    
+//    func signIn() {
+//            userStore.signIn(email: email, password: password) { (result, error) in
+//            if error != nil {
+//                self.isError.toggle()
+//                self.errorTxt = error?.localizedDescription ?? "nil"
+//                print(error?.localizedDescription ?? "nil")
+//            } else {
+//                self.email = ""
+//                self.password = ""
+//            }
+//        }
+//    }
     
     var body: some View {
-        GeometryReader { geometry in
-            NavigationView {
-            ZStack {
-                Color("myColor").edgesIgnoringSafeArea(.all)
-                VStack (alignment: .center){
+        ZStack {
+              Color("myColor").edgesIgnoringSafeArea(.all)
+        VStack {
             Image("loggo")
-            .resizable()
-                .frame(width: geometry.size.width / 1,
-                    height: geometry.size.height / 2)
-                Spacer()
-                Text("ログイン")
-                TextField("e-mail.addres", text: self.$mail)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                Spacer()
-                SecureField("password", text: self.$password)
-               .textFieldStyle(RoundedBorderTextFieldStyle())
-               .padding()
-                    Spacer()
-                    Button(action: {
+                .resizable()
+            Text("LOGIN")
+                .fontWeight(.heavy)
+                .font(.title)
+            TextField("Email", text: $email)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(5.0)
+                .padding(.bottom, 15)
+            SecureField("Password", text: $password)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(5.0)
+                .padding(.bottom, 15)
+            Button(action: {
+                print("Button tapped")
+                if self.email.isEmpty {
+                    self.isError.toggle()
+                    self.errorTxt = "emailアドレスが入力されていません"
+                } else if self.password.isEmpty {
+                    self.isError.toggle()
+                    self.errorTxt = "パスワードが入力されていません"
+                } else {
                     
-                        if self.mail.isEmpty && self.password.isEmpty {
-                            print("だめ")
-                            self.isError.toggle()
-                            self.errorTxt = "どちらも入力されていません"
-                        } else if self.mail.isEmpty {
-                            print("これもダメ")
-                            self.isError.toggle()
-                             self.errorTxt = "emailアドレスが入力されていません"
-                        } else if self.password.isEmpty {
-                            self.isError.toggle()
-                            self.errorTxt = "パスワードが入力されていません"
-                            self.isShowpass = true
-                        } else {
-                            print("おけ")
-                        }
-                })
-                    {
-                        AuthButton(title: "LOG IN")
                 }
-                    Spacer()
-                NavigationLink(destination: SignupView()) {
-                        Text("まだ登録がお済みでない方はこちら")
-                    }
-                }.alert(isPresented: self.$isError, content: {
-                    Alert(title: Text("だめ！"), message: Text(self.errorTxt),dismissButton: .default(Text("OK")))}
-                )
-                }
+            }) {
+                AuthButton(title: "LOGIN")
             }
+            Button(action: {
+                // action
+                self.showModal.toggle()
+                self.signIn()
+                
+            }){
+                Text("Don't have an account? Sign up")
+            }.padding(.top, 8)
+            Spacer()
+        }.padding()
+//            .alert(isPresented: $isError, content: {
+//                Alert(title: Text("Error"), message: Text(self.errorTxt), dismissButton: .default(Text("OK")))
+//            })
+//            .sheet(isPresented: self.$showModal) {
+//                SignupView().environmentObject(self.userStore)
+//        }
         }
-        }
-        }
-        
-
+    }
+    }
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {

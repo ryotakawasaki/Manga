@@ -13,11 +13,11 @@ struct StopView: View {
     
     var body: some View {
         VStack(alignment: .center) {
-            NavigationView {
+//            NavigationView {
                 Text("Modal View")
-            }.sheet(isPresented: self.$isShowStop) {
-                ChildView()
-            }
+//            }.sheet(isPresented: self.$isShowStop) {
+//                ChildView()
+//            }
             
             Button(
                 action: {

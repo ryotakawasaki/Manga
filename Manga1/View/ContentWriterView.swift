@@ -11,29 +11,25 @@ import SwiftUI
 struct ContentWriterView: View {
     
     @ObservedObject var networkManager: NetworkManager = NetworkManager()
-    @ObservedObject var stopwatch: Stopwatch = Stopwatch()
+    @EnvironmentObject var stopWatch: Stopwatch
+    @EnvironmentObject var intimer: InTimer
     @State var isPlaying = false
     @State var isShowManga: Bool = false
     
-//    func desplaychange () {
-//        if self.stopwatch.minCounter == 0 && self.stopwatch.secCounter == 0{
-//            self.isShowManga = true
-//                  } else { print("何もなし！")}
-//    }
-    
+
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
             ZStack {
                 VStack {
             List {
-                ForEach(self.networkManager.users, id: \.title) { user in
-                    UserRow(user: user)
+                ForEach(self.networkManager.writer, id: \.title) { writer in
+                    UserRow(writer: writer)
             } .disabled(!self.isPlaying)
         } .listStyle(GroupedListStyle())
             
             Button(action: {
-                self.stopwatch.stop()
+                //self.stopwatch.stop()
                  self.isPlaying = false
                }) {
                 Image(systemName: "timer")
@@ -43,36 +39,34 @@ struct ContentWriterView: View {
                 }.disabled(!self.isPlaying)
             .buttonStyle(PlainButtonStyle())
     
-            Text("\(self.stopwatch.hourCounter):\(self.stopwatch.minCounter)")
-//                    if self.stopwatch.minCounter == 0 && self.stopwatch.secCounter == 0{
-//                        self.isShowManga = true
-//                    } else { print("何もなし！") }
-                
-                
-                .offset(x: 160, y: -715)
+                    Text("\(self.stopWatch.hourCounter):\(self.stopWatch.minCounter)")
+
+                .offset(x: 160, y: -718)
+
                }
                 }
-            }.navigationBarItems(leading: Button(action:{
-                        if !self.isPlaying {
-                            self.stopwatch.start()
-                            self.isPlaying = true}
-                        print("ここここここここここ")
-            //            UserDefaults.standard.set(self.stopwatch.minCounter, forKey: "min")
-            //            UserDefaults.standard.set(self.stopwatch.secCounter, forKey: "sec")
-                    }) {
-                        Text("タイマースタート")
-                    })
-                   
-                    .onAppear(perform: {
+            
+            } .navigationBarItems(leading: Button(action:{
+                    if !self.isPlaying {
+//                        self.intimer.start()
+                                self.isPlaying = true
+                    }
+                            print("ここここここここここ")
+                        }) {
+                            Text("読む！")
+                        })
+           .onAppear(perform: {
                         self.networkManager.getAllUsers()
                     })
                 .onAppear(perform: {
-                    self.stopwatch.stop()
+                    self.stopWatch.stop()
                 })
-    
+        }
+                
     }
+    
 }
-}
+
 
 struct ContentWriterView_Previews: PreviewProvider {
     static var previews: some View {
